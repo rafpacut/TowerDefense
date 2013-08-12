@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+                <title>Learning the basics of canvas</title>
+                <meta charset="utf-8">
+ 
+                <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+
+		<link rel="stylesheet" type="text/css" href="style.css" media="screen" />
+ 
+        </head>
+ 
+        <body>
+                <canvas id="myCanvas">
+                        <!-- Insert fallback content here -->
+                </canvas>
+                <script type="text/javascript">
+			
+			window.requestAnimFrame = (function (callback)
+					{
+					return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
+				        	window.oRequestAnimationFrame || window.msRequestAnimationFrame || function( callback ) 
+						{
+							window.setTimeout(callback, 1000 / 60);
+						};
+					})();
+
+			var moves = new Array( 1, 2, 3, 4, 5, 6, 7, 8, 9 );
+			var moves2 = new Array( 1, 5, 2, 6 );
+
+			var x = 100;
+			var y = 100;
+			var dx = 0;
+			var dy = 0;
+			var width = 25;
+			var height = 12;
+			var it = 0;
+			var distance = 30; // distance per move
+			var speed = 0.5;
+
+			function animate( it, canvas, context )
+			{
+				switch( moves[it] )
+				{
+					case 1: 
+							dx -= speed; break;
+					case 2:
+							dx -= speed;
+							dy -= speed;break;
+					case 3:
+							dy -= speed;break;
+					case 4:
+							dx += speed;
+							dy -= speed;break;
+					case 5:
+							dx += speed;break;
+					case 6:
+							dx += speed;
+							dy += speed; break;
+					case 7:
+							dy += speed; break;
+					case 8:
+							dx -= speed;
+							dy += speed;break;
+					case 9:
+							break;
+				}
+				if( it < 8 && Math.abs( dx ) > distance || Math.abs ( dy ) > distance )
+				{
+					it += 1;
+
+					x += dx;
+					dx = 0;
+					y += dy;
+					dy = 0;
+				}
+
+				context.clearRect(0, 0, canvas.width, canvas.height );
+
+				context.fillRect(x + dx, y + dy, width, height );
+
+				if( x + dx + width < canvas.width && y + dy + height < canvas.height && x + dx > 0 && y + dy > 0 )
+					requestAnimFrame( function() { animate( it, canvas, context ); } );
+				
+			}
+			
+			var canvas = document.getElementById('myCanvas');
+			var context = canvas.getContext('2d');
+
+			animate( it, canvas, context );
+			//function loadImages( sources, callback )
+			//{
+			//	var images = new Array();
+			//	var loadedImages = 0;
+			//	var numImages = 0;
+
+			//	for( var src in sources )
+			//	{
+			//		numImages++;
+			//	}
+
+			//	for( var src in sources )
+			//	{
+			//		images[src] = new Image();
+			//		images[src].onload = function()
+			//		{
+			//			if( ++loadedImages >= numImages )
+			//			{
+			//				callback( images );
+			//			}
+			//		}
+			//		images[src].src = sources[src];
+			//	}
+			//}
+
+			//var canvas = document.getElementById('myCanvas');
+			//var context = canvas.getContext('2d');
+			//context.canvas.width = window.innerWidth;
+			//context.canvas.height = window.innerHeight;
+
+			//var sources = {
+			//	darthVader: 'http://www.html5canvastutorials.com/demos/assets/darth-vader.jpg',
+			//        yoda: 'http://www.html5canvastutorials.com/demos/assets/yoda.jpg'
+
+			//};
+			//
+			//loadImages( sources, function( images )
+			//{
+			//	var x = 0;
+			//	var y = 0;
+			//	for( img in images )
+			//	{
+			//		context.drawImage( images[img], x, y, 500, 200 );
+			//		y += 200;
+			//	}
+			//});
+			//context.translate((canvas.width - 500) / 2, (canvas.height - 200) / 4);
+			//context.rotate( Math.PI / 4 );
+
+                </script>
+		        </body>
+</html>
+
+
