@@ -1,3 +1,4 @@
+var fields = new Array();
 function Field(number, x, y)
 {
 //	var number;
@@ -21,7 +22,6 @@ function init()
 {
 	//populate fields:
 	// 12 x 12 fields 50px x 50px
-	var fields = new Array();
 	for( var i = 0; i < 12; i ++ )
 	{
 		for( var j = 0; j < 12; j++ )
@@ -46,9 +46,6 @@ function init()
 			}
 		}
 	}
-
-
-
 }
 
 
