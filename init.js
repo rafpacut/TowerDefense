@@ -13,7 +13,7 @@ function Field(number, x, y)
 	this.traversable = true;
 	this.ngbs = new Array();
 	this.distance = 99999;
-	this.parent = null;
+	this.parentt = null;
 }
 
 
@@ -34,23 +34,18 @@ function init()
 	{
 		for( var k = 0; k < fields.length; k++ )
 		{
-			if( Math.abs( fields[j].x - fields[k].x ) == 50 || 
-			    Math.abs( fields[j].y - fields[k].y ) == 50 )
+			if( fields[j] !== fields[k] )
 			{
-				//sa sasiadami:
-				fields[j].ngbs.push( fields[k] );
+
+				if( Math.abs( fields[j].x - fields[k].x ) <= 50 && 
+				    Math.abs( fields[j].y - fields[k].y ) <= 50 )
+				{
+					//sa sasiadami:
+					fields[j].ngbs.push( fields[k] );
+				}
 			}
 		}
 	}
-	for( j = 0; j < fields.length; j++ )
-	{
-		console.log( "field: " + fields[j].number + "has ngbs: ");
-		for( var k = 0; k < fields[j].ngbs.length; k++ )
-		{
-			console.log(fields[j].ngbs[k].number + " ");
-		}
-	}
-
 
 
 
