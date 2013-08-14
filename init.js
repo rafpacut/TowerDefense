@@ -1,4 +1,5 @@
 var fields = new Array();
+var mobs = [];
 function Field(number, x, y)
 {
 //	var number;
@@ -15,6 +16,22 @@ function Field(number, x, y)
 	this.ngbs = new Array();
 	this.distance = 99999;
 	this.parentt = null;
+}
+
+function Mob(x, y, field)
+{
+	this.x = x;
+	this.y = y;
+	this.field = field;
+}
+
+function init_mobs( spawn_field )
+{
+	for( var i = 0; i < 1; i++ )
+	{
+		var mob = new Mob(spawn_field.x, spawn_field.y, spawn_field );
+		mobs.push( mob );
+	}
 }
 
 
@@ -46,6 +63,7 @@ function init()
 			}
 		}
 	}
+	init_mobs( fields[ fields.length - 1 ] );
 }
 
 
