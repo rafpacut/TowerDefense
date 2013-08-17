@@ -1,5 +1,6 @@
 var fields = new Array();
 var mobs = [];
+var towers = [];
 function Field(number, x, y)
 {
 	this.number = number;
@@ -24,6 +25,13 @@ function Mob(x, y, field)
 	this.field = field;
 	this.field_distx = 0;
 	this.field_disty = 0;
+}
+
+function Tower( x, y )
+{
+	this.x = x;
+	this.y = y;
+	this.field = null;
 }
 
 function init_mobs( spawn_field )
@@ -62,7 +70,7 @@ function init_fields()
 	    {
 		    var x = j * hexRectangleWidth + ((i % 2) * hexRadius);
 		    var y = i * (sideLength + hexHeight);
-		var field = new Field( boardWidth * i + j, Math.round(x), Math.round(y + hexHeight / 2) );
+		var field = new Field( boardWidth * i + j, Math.round(x), Math.round(y) + 5 );
 		fields.push( field );
 	    }
 	}
