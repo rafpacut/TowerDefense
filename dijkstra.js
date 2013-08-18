@@ -1,3 +1,12 @@
+function prepare_grid()
+{
+	for(var k = 0; k < fields.length; k++)
+	{
+		fields[k].distance = 999999;
+		fields[k].parentt = null;
+	}
+}
+
 function find_minimal( Q )
 {
 	var minimal = Q[0];
@@ -14,7 +23,7 @@ function find_minimal( Q )
 
 
 
-function shortest_paths( graph, source, target )
+function shortest_paths( graph, source )
 {
 	var Q = new Array();
 	source.distance = 0;	
@@ -26,10 +35,13 @@ function shortest_paths( graph, source, target )
 		Q.splice( index,1 );
 		for( var i = 0; i < actual.ngbs.length; i ++ )
 		{
-			if( actual.distance + 1 < actual.ngbs[i].distance )
+			if( actual.ngbs[i].traversable )
 			{
-				actual.ngbs[i].distance = actual.distance + 1;
-				actual.ngbs[i].parentt = actual;
+				if( actual.distance + 1 < actual.ngbs[i].distance )
+				{
+					actual.ngbs[i].distance = actual.distance + 1;
+					actual.ngbs[i].parentt = actual;
+				}
 			}
 		}
 	}
