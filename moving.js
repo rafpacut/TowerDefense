@@ -25,8 +25,8 @@ function move()
 				if( next_field < path.length )
 				{
 					mobs[i].field = path[ next_field ];
-					mobs[i].field_distx = ( mobs[i].field.x -  mobs[i].x ) / 10;
-					mobs[i].field_disty = ( mobs[i].field.y -  mobs[i].y ) / 10;
+					mobs[i].field_distx = ( mobs[i].field.x -  mobs[i].x ) / 100;
+					mobs[i].field_disty = ( mobs[i].field.y -  mobs[i].y ) / 100;
 
 				}
 			}
@@ -93,15 +93,29 @@ function move()
 				if( Math.round(fields[i].x) == Math.round(screenX) && 
 					Math.round(fields[i].y) == Math.round(screenY) + 5)
 				{
-					fields[i].traversable = false;
 					tower.field = fields[i];
+					tower.field.traversable = false;
 				}
 			}
-        		towers.push( tower );
-			for(var k = 0; k < fields.length; k++)fields[k].distance = 999999;
-			shortest_paths(fields, fields[0], fields[fields.length - 1]);
-			path.splice();
+			prepare_grid();
+			shortest_paths(fields, fields[0]);
+			path = [];
 			path = trace_back( fields[fields.length -1]);
+			if( path.length > 1 )
+			{
+				towers.push( tower );
+			}
+			else
+			{
+				tower.field.traversable = true;
+				prepare_grid();
+				shortest_paths( fields, fields[0] );
+				path = [];
+				path = trace_back( fields[ fields.length -1]);
+			}
+
+
+
                 }
             }
         });
