@@ -1,6 +1,7 @@
 var fields = new Array();
 var mobs = [];
 var towers = [];
+
 function Field(number, x, y)
 {
 	this.number = number;
@@ -11,6 +12,7 @@ function Field(number, x, y)
 	this.ngbs = new Array();
 	this.distance = 99999;
 	this.parentt = null;
+	this.towers_in_range = [];
 
 	this.squaredCenterDistance = function( field2 )
 	{
@@ -32,6 +34,24 @@ function Tower( x, y )
 	this.x = x;
 	this.y = y;
 	this.field = null;
+	this.locked = null;
+	this.range = 3;
+
+	this.set_range = function()
+	{
+		for( j = 0 ; j < fields.length; j++)
+		{
+			if( this.field.squaredCenterDistance( fields[j] ) <= this.range * 1225 )
+			{
+				fields[j].towers_in_range.push( this );
+			}
+		}
+
+	}
+
+
+
+
 }
 
 function init_mobs( spawn_field )
