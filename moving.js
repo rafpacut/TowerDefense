@@ -115,6 +115,7 @@ canvas.addEventListener("click", function(eventInfo) {
 		if( path.length > 1 )
 		{
 			towers.push( tower );
+			tower.set_range();
 		}
 		else
 		{
