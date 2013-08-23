@@ -25,8 +25,10 @@ function Mob(x, y, field)
 	this.x = x;
 	this.y = y;
 	this.field = field;
+	this.hp = 10;
 	this.field_distx = 0;
 	this.field_disty = 0;
+	this.speed = 3;
 }
 
 function Tower( x, y )
@@ -36,6 +38,7 @@ function Tower( x, y )
 	this.field = null;
 	this.locked = null;
 	this.range = 3;
+	this.dmg = 2;
 
 	this.set_range = function()
 	{

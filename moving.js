@@ -15,10 +15,31 @@ function update()
 				mobs[i].field = path[ next_field ];
 				mobs[i].field_distx = ( mobs[i].field.x -  mobs[i].x ) / 100;
 				mobs[i].field_disty = ( mobs[i].field.y -  mobs[i].y ) / 100;
-
 			}
 		}
+		
+		for( var j = 0; j < mobs[i].field.towers_in_range.length; j++ )
+		{
+			if( mobs[i].field.towers_in_range[j].locked == null )
+			{
+				mobs[i].field.towers_in_range[j].locked = mobs[i];
+			}
+		}
+
+		if( mobs[i].hp <= 0 )
+		{
+			mobs.splice( i, 1 );
+		}
 	}
+
+	for( var i = 0; i < towers.length; i++ )
+	{
+		if( towers[i].locked != null )
+		{
+			towers[i].locked.hp -= towers[i].dmg;
+		}
+	}
+
 }
 
 function draw()
@@ -43,9 +64,14 @@ function draw()
 
 function move()
 {
+	var refresh_interval = 10;
+	var now, delta;
+	var then = new Date().getTime();
 	function animate( canvas, context)
 	{
 		// update
+		now = new Date().getTime();
+		delta = now - then;
 		window.requestAnimFrame = (function (callback)
 				{
 				return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
@@ -54,12 +80,16 @@ function move()
 						window.setTimeout(callback, 1000 / 60);
 					};
 				})();
+		if( delta > refresh_interval )
+		{
+			update();
 
-		update();
+			then = now;
 
-		context.clearRect(0, 0, canvas.width, canvas.height );
+			context.clearRect(0, 0, canvas.width, canvas.height );
 
-		draw();
+			draw();
+		}
 
 
 
