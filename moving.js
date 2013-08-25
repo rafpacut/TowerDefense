@@ -1,5 +1,7 @@
 function update()
 {
+	//To-Do:
+	//wychodzenie moba z zasiegu,
 	for( var i = 0; i < mobs.length; i ++)
 	{
 		if( Math.round(mobs[i].x) != mobs[i].field.x || Math.round(mobs[i].y) != mobs[i].field.y )
@@ -20,9 +22,9 @@ function update()
 		
 		for( var j = 0; j < mobs[i].field.towers_in_range.length; j++ )
 		{
-			if( mobs[i].field.towers_in_range[j].locked == null )
+			if( mobs[i].field.towers_in_range[j].target == null )
 			{
-				mobs[i].field.towers_in_range[j].locked = mobs[i];
+				mobs[i].field.towers_in_range[j].target = mobs[i];
 			}
 		}
 
@@ -34,9 +36,25 @@ function update()
 
 	for( var i = 0; i < towers.length; i++ )
 	{
-		if( towers[i].locked != null )
+		if( towers[i].target != null )
 		{
-			towers[i].locked.hp -= towers[i].dmg;
+
+			if( towers[i].reloadT == 0 )
+			{
+				if( towers[i].target.field.towers_in_range.indexOf( towers[i] ) != -1 )
+				{
+					towers[i].target.hp -= towers[i].dmg;
+					towers[i].reloadT = 20;
+				}
+				else
+				{
+					towers[i].target == null;
+				}
+			}
+			else
+			{
+				towers[i].reloadT --;
+			}
 		}
 	}
 
@@ -64,10 +82,10 @@ function draw()
 
 function move()
 {
-	var refresh_interval = 10;
+	var refresh_time = 10;
 	var now, delta;
 	var then = new Date().getTime();
-	function animate( canvas, context)
+	function animate( canvas, context )
 	{
 		// update
 		now = new Date().getTime();
@@ -80,7 +98,7 @@ function move()
 						window.setTimeout(callback, 1000 / 60);
 					};
 				})();
-		if( delta > refresh_interval )
+		if( delta > refresh_time )
 		{
 			update();
 

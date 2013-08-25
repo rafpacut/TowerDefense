@@ -25,7 +25,7 @@ function Mob(x, y, field)
 	this.x = x;
 	this.y = y;
 	this.field = field;
-	this.hp = 10;
+	this.hp = 30;
 	this.field_distx = 0;
 	this.field_disty = 0;
 	this.speed = 3;
@@ -36,9 +36,10 @@ function Tower( x, y )
 	this.x = x;
 	this.y = y;
 	this.field = null;
-	this.locked = null;
+	this.target = null;
 	this.range = 3;
-	this.dmg = 2;
+	this.dmg = 1;
+	this.reloadT = 0;
 
 	this.set_range = function()
 	{
