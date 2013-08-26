@@ -12,7 +12,7 @@ function find_minimal( Q )
 	var minimal = Q[0];
 	for( var i = 0; i < Q.length; i++ )
 	{
-		if( minimal.distance > Q[i] && minimal != Q[i] )
+		if( minimal.distance > Q[i].distance && minimal != Q[i] )
 		{
 			minimal = Q[i];
 		}
