@@ -1,7 +1,5 @@
 function update()
 {
-	//To-Do:
-	//wychodzenie moba z zasiegu,
 	for( var i = 0; i < mobs.length; i ++)
 	{
 		if( Math.round(mobs[i].x) != mobs[i].field.x || Math.round(mobs[i].y) != mobs[i].field.y )
@@ -75,7 +73,12 @@ function draw()
 	{
 		context.fillStyle = 'green';
 		context.fill();
-		context.fillRect(mobs[i].x, mobs[i].y, 25, 12 );
+		context.fillRect(mobs[i].x, mobs[i].y - 3, 12, 2);
+		context.fillStyle = 'red';
+		context.fillRect(mobs[i].x, mobs[i].y - 3 , 12 - (12*(mobs[i].hp / mobs[i].max_hp)),2);
+		context.fill();
+		context.fillStyle = 'green';
+		context.fillRect(mobs[i].x, mobs[i].y, 12, 12 );
 	}
 }
 
@@ -149,8 +152,8 @@ canvas.addEventListener("click", function(eventInfo) {
 		var tower = new Tower( screenX, screenY );
 		for( var i = 0; i < fields.length; i++)
 		{
-			if( Math.round(fields[i].x) == Math.round(screenX) && 
-				Math.round(fields[i].y) == Math.round(screenY) + 5)
+			if( Math.round(fields[i].x - 5) == Math.round(screenX) && 
+				Math.round(fields[i].y - 10) == Math.round(screenY))
 			{
 				tower.field = fields[i];
 				tower.field.traversable = false;
