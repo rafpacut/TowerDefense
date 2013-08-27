@@ -1,6 +1,16 @@
 var fields = new Array();
 var mobs = [];
 var towers = [];
+var level = new Level(4);
+var path = [];
+
+function Level(mobNumber)
+{
+	this.mob_spawn_interval = 500;
+	this.time_to_spawn = 0; 
+	this.mobs_spawned = 0;
+	this.mob_number = mobNumber;
+}
 
 function Field(number, x, y)
 {
@@ -61,7 +71,7 @@ function Tower( x, y )
 
 function init_mobs( spawn_field )
 {
-	for( var i = 0; i < 1; i++ )
+	for( var i = 0; i < 2; i++ )
 	{
 		var mob = new Mob(spawn_field.x, spawn_field.y, spawn_field );
 		mobs.push( mob );
@@ -72,6 +82,8 @@ function init_mobs( spawn_field )
 function init_fields()
 {
 
+	fields = [];
+	towers = [];
 	var hexHeight,
 		hexRadius,
 		hexRectangleHeight,
@@ -120,7 +132,8 @@ function init_fields()
 function init()
 {
 	init_fields();
-	init_mobs( fields[ fields.length - 1 ] );
+	shortest_paths( fields, fields[0] );
+	path = trace_back( fields[fields.length - 1]);
 }
 
 

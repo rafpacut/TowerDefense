@@ -20,9 +20,7 @@
 		<script type="text/javascript" src="hexagons.js"></script>
                 <script type="text/javascript">
 			init();
-			shortest_paths( fields, fields[0] );
-			var path = trace_back( fields[fields.length - 1]);
-			for( i = 0; i < path.lenght; i++)
+			for( i = 0; i < path.length; i++)
 				console.log( path[i] );
 			move();
 			

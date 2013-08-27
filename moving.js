@@ -1,5 +1,22 @@
 function update()
 {
+	if( level.mobs_spawned < level.mob_number )
+	{
+		if( level.time_to_spawn == 0 )
+		{
+			var spawn_field = fields[fields.length -1 ];
+			var mob = new Mob( spawn_field.x, spawn_field.y, spawn_field );
+			mobs.push( mob );
+			level.mobs_spawned++;
+			level.time_to_spawn = level.mob_spawn_interval;
+		}
+		else
+		{
+			level.time_to_spawn --;
+		}
+	}
+
+
 	for( var i = 0; i < mobs.length; i ++)
 	{
 		if( Math.round(mobs[i].x) != mobs[i].field.x || Math.round(mobs[i].y) != mobs[i].field.y )
@@ -26,8 +43,13 @@ function update()
 			}
 		}
 
-		if( mobs[i].hp <= 0 )
+		if( mobs[i].hp <= 0 || mobs[i].field === fields[0] )
 		{
+			for( var j = 0; j < towers.length; j++ )
+			{
+				if( towers[j].target == mobs[i] )
+					towers[j].target = null;
+			}
 			mobs.splice( i, 1 );
 		}
 	}
@@ -36,7 +58,6 @@ function update()
 	{
 		if( towers[i].target != null )
 		{
-
 			if( towers[i].reloadT == 0 )
 			{
 				if( towers[i].target.field.towers_in_range.indexOf( towers[i] ) != -1 )
@@ -46,7 +67,7 @@ function update()
 				}
 				else
 				{
-					towers[i].target == null;
+					towers[i].target = null;
 				}
 			}
 			else
@@ -55,6 +76,14 @@ function update()
 			}
 		}
 	}
+
+	if( mobs.length == 0 && level.mobs_spawned == level.mob_number )
+	{
+		level.mob_number += 5;
+		level.mobs_spawned = 0;
+		init();
+	}
+
 
 }
 
