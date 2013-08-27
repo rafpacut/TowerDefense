@@ -43,7 +43,7 @@ function drawBoard(canvasContext, width, height)
 		    //coloring the path
 		    for( var k = 0; k < path.length; k++)
 		    {
-			    if( Math.round(x) == path[k].x && Math.round(y) == path[k].y - 5 )//5 is rounded hexHeight / 2
+			    if( Math.round(x) + 5 == path[k].x && Math.round(y) == path[k].y - 10 )//10 is rounded hexHeight
 				    fill = true;
 		    }
 		    //----
