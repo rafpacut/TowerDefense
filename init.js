@@ -6,10 +6,12 @@ var path = [];
 
 function Level(mobNumber)
 {
-	this.mob_spawn_interval = 500;
-	this.time_to_spawn = 0; 
+	this.spawn_interval = 3;
 	this.mobs_spawned = 0;
 	this.mob_number = mobNumber;
+	this.start = null;
+	this.now = null;
+	this.last_spawned_time = null;
 }
 
 function Field(number, x, y)
@@ -49,8 +51,10 @@ function Tower( x, y )
 	this.field = null;
 	this.target = null;
 	this.range = 3;
-	this.dmg = 1;
-	this.reloadT = 0;
+	this.dmg = 5;
+	//this.reloadT = 0;
+	this.last_shoot_time = null;
+	this.speed = 1;
 
 	this.set_range = function()
 	{

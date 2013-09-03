@@ -1,18 +1,16 @@
-function update()
+function update(delta)
 {
 	if( level.mobs_spawned < level.mob_number )
 	{
-		if( level.time_to_spawn == 0 )
+		var now = new Date().getTime();
+		var lvl_delta = ( now - level.last_spawned_time ) / 1000;
+		if( lvl_delta > level.spawn_interval )
 		{
 			var spawn_field = fields[fields.length -1 ];
 			var mob = new Mob( spawn_field.x, spawn_field.y, spawn_field );
 			mobs.push( mob );
 			level.mobs_spawned++;
-			level.time_to_spawn = level.mob_spawn_interval;
-		}
-		else
-		{
-			level.time_to_spawn --;
+			level.last_spawned_time = now;
 		}
 	}
 
@@ -58,21 +56,21 @@ function update()
 	{
 		if( towers[i].target != null )
 		{
-			if( towers[i].reloadT == 0 )
+			if( towers[i].last_shoot_time == null )
+				towers[i].last_shoot_time = new Date().getTime();
+			var now = new Date().getTime();
+			var tower_delta = (now - towers[i].last_shoot_time)  / 1000;
+			if( tower_delta > towers[i].speed )
 			{
 				if( towers[i].target.field.towers_in_range.indexOf( towers[i] ) != -1 )
 				{
 					towers[i].target.hp -= towers[i].dmg;
-					towers[i].reloadT = 20;
+					towers[i].last_shoot_time = new Date().getTime();
 				}
 				else
 				{
 					towers[i].target = null;
 				}
-			}
-			else
-			{
-				towers[i].reloadT --;
 			}
 		}
 	}
@@ -81,6 +79,8 @@ function update()
 	{
 		level.mob_number += 5;
 		level.mobs_spawned = 0;
+		level.time_to_spawn = 0;
+		level.now = new Date().getTime();
 		init();
 	}
 
@@ -112,40 +112,35 @@ function draw()
 }
 
 
+function animate( canvas, context )
+{
+	level.now = new Date().getTime();
+	delta = (level.now - level.start) / 1000;
+	window.requestAnimFrame = (function (callback)
+			{
+			return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
+				window.oRequestAnimationFrame || window.msRequestAnimationFrame || function( callback ) 
+				{
+					window.setTimeout(callback, 1000 / 60);
+				};
+			})();
+	update(delta);
+
+	context.clearRect(0, 0, canvas.width, canvas.height );
+
+	draw();
+
+
+
+	requestAnimFrame( function() { animate( canvas, context ); } );
+}
+
 function move()
 {
-	var refresh_time = 10;
-	var now, delta;
-	var then = new Date().getTime();
-	function animate( canvas, context )
-	{
-		// update
-		now = new Date().getTime();
-		delta = now - then;
-		window.requestAnimFrame = (function (callback)
-				{
-				return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame ||
-					window.oRequestAnimationFrame || window.msRequestAnimationFrame || function( callback ) 
-					{
-						window.setTimeout(callback, 1000 / 60);
-					};
-				})();
-		if( delta > refresh_time )
-		{
-			update();
-
-			then = now;
-
-			context.clearRect(0, 0, canvas.width, canvas.height );
-
-			draw();
-		}
-
-
-
-		requestAnimFrame( function() { animate( canvas, context ); } );
-	}
-	context.fillRect(550, 550, 25, 12 );
+	var delta;
+	level.start = new Date().getTime();
+	level.last_spawned_time = level.start / 1000;
+	//context.fillRect(550, 550, 25, 12 );
 	animate( canvas, context );
 }
 
